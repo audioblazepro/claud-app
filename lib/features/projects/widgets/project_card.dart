@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import '../../../shared/widgets/custom_card.dart';
 
-class GoalCard extends StatelessWidget {
+class ProjectCard extends StatelessWidget {
   final String title;
   final String? description;
   final String deadline;
   final double progress;
-  final String status;
+  final String priority;
 
-  const GoalCard({
+  const ProjectCard({
     super.key,
     required this.title,
     this.description,
     required this.deadline,
     required this.progress,
-    required this.status,
+    required this.priority,
   });
 
   @override
@@ -50,23 +50,7 @@ class GoalCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  status,
-                  style: TextStyle(
-                    color: Colors.lightBlue[300],
-                    fontSize: 12,
-                  ),
-                ),
-              ),
+              _buildPriorityChip(priority),
             ],
           ),
           const SizedBox(height: 16),
@@ -134,6 +118,38 @@ class GoalCard extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPriorityChip(String priority) {
+    Color color;
+    switch (priority.toLowerCase()) {
+      case 'alta':
+        color = Colors.red;
+        break;
+      case 'media':
+        color = Colors.orange;
+        break;
+      default:
+        color = Colors.green;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 6,
+      ),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        priority,
+        style: TextStyle(
+          color: color,
+          fontSize: 12,
+        ),
       ),
     );
   }
