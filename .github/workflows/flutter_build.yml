@@ -1,0 +1,38 @@
+name: Build APK (Release - arm64-v8a Only)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código fuente
+      uses: actions/checkout@v4
+
+    - name: Configurar Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.29.3'
+
+    - name: Instalar dependencias
+      run: flutter pub get
+
+    - name: Compilar APK Release (solo arm64)
+      run: flutter build apk --release --target-platform android-arm64
+
+    - name: Comprimir APK en ZIP
+      run: |
+        mkdir output
+        cp build/app/outputs/flutter-apk/app-release.apk output/rk13-arm64.apk
+        cd output
+        zip rk13-arm64.zip rk13-arm64.apk
+
+    - name: Subir ZIP como artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: rk13-release-arm64
+        path: output/rk13-arm64.zip
